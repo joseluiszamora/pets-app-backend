@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id          Int      @id @default(autoincrement())
+  users       User[]
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  createdBy   Int?
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  profile   Profile   @relation(fields: [profileId], references: [id])
+  profileId Int
+  document  String    @unique
+  email     String
+  password  String
+  firstName String
+  lastName  String
+  avatar    String?
+  logins    Int       @default(0)
+  lastLogin DateTime?
+  is_active Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  createdBy Int?
+}
+
+model Nationality {
+  id      Int      @id @default(autoincrement())
+  name    String
+  flag    String?
+  persons Person[]
+}
+
+model Person {
+  id            Int         @id @default(autoincrement())
+  // Personal Info
+  document      String      @unique
+  seat          String
+  documentType  String
+  firstName     String
+  lastName      String
+  birthday      DateTime
+  phone         String
+  cellphone     String
+  email         String      @unique
+  gender        String
+  address       String
+  password      String
+  avatar        String?
+  // Nationality
+  nationality   Nationality @relation(fields: [nationalityId], references: [id])
+  nationalityId Int         @default(1)
+  // User status
+  state         String
+  // Pets Info
+  pets          Pet[]
+  // Invoice info
+  // invoice       Invoice?
+  // Record info
+  logins        Int         @default(0)
+  lastLogin     DateTime?
+  registeredAt  DateTime    @default(now())
+}
+
+model Pet {
+  id            Int            @id @default(autoincrement())
+  // Person info
+  person        Person         @relation(fields: [personId], references: [id])
+  personId      Int
+  // Pet Info
+  name          String
+  // category     String // cat/dog/other
+  // subcategory   String // raza
+  color         String
+  birthday      String
+  weight        String
+  size          String
+  status        String
+  // Record info
+  registeredAt  DateTime       @default(now())
+  // Category subcategory
+  category      PetCategory    @relation(fields: [categoryId], references: [id])
+  categoryId    Int
+  subCategory   PetSubCategory @relation(fields: [subCategoryId], references: [id])
+  subCategoryId Int
+}
+
+model PetCategory {
+  id          Int      @id @default(autoincrement())
+  pets        Pet[]
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model PetSubCategory {
+  id          Int      @id @default(autoincrement())
+  pets        Pet[]
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+}

@@ -1,0 +1,43 @@
+# OS X
+.DS_Store*
+Icon?
+._*
+
+# VScode
+.vscode
+.vscode/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+.directory
+*~
+
+
+# npm
+node_modules
+package-lock.json
+*.log
+*.gz
+
+
+# Coveralls
+coverage
+
+# Benchmarking
+benchmarks/graphs
+
+# macOS
+.DS_Store
+
+# YARN
+yarn.lock
+
+# ENV
+.env
+
+#DIST
+dist
